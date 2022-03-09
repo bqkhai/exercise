@@ -1,0 +1,40 @@
+POST http://localhost:5000/users/add
+Content-Type: application/json
+
+{
+    "username": "bui quang"
+}
+
+###
+GET http://localhost:5000/users/
+
+###
+GET http://localhost:5000/exercises/
+
+###
+GET http://localhost:5000/exercises/
+
+###
+GET http://localhost:5000/exercises/6228c422e9c2ec6216c1b436
+
+###
+POST http://localhost:5000/exercises/add
+Content-Type: application/json
+
+{
+    "username": "khai",
+    "desciption": "Sinh vien",
+    "duration": 2,
+    "date": 1008
+}
+
+###
+PUT http://localhost:5000/exercises/edit/6228c61c8dd784affaf5c469
+Content-Type: application/json
+
+{
+    "username": "Bui Quang Khai",
+    "desciption": "Sinh vien RMIT",
+    "duration": 5,
+    "date": 0
+}
