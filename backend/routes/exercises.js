@@ -5,85 +5,83 @@ const router = express.Router();
 
 router.route('/').get(async (req, res) => {
     try {
-        const exerciseList = await Exercise.find();
-        res.status(200).json({ success: true, exerciseList });
+        const exercises = await Exercise.find();
+        return res.status(200).json(exercises);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
-
-router.route('/add').post(async (req, res) => {
-    const { username, desciption, duration } = req.body;
-    //const duration = Number(req.body.duration);
-    const date = Date.parse(req.body.date);
-
-    if (!username || !desciption || !duration || !date)
-        res.status(400).json({
-            success: false,
-            message: 'Title is required',
-        });
-
-    try {
-        const newExercise = new Exercise({
-            username,
-            desciption,
-            duration,
-            date,
-        });
-
-        await newExercise.save();
-        res.status(200).json({
-            success: true,
-            message: 'Create exercise success',
-            newExercise,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        return res.status(500).json({ message: error.message });
     }
 });
 
 router.route('/:id').get(async (req, res) => {
     try {
         const exercise = await Exercise.findById(req.params.id);
-        res.status(200).json({ success: true, exercise });
+        return res.status(200).json(exercise);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        return res.status(500).json({ message: error.message });
+    }
+});
+
+router.route('/add').post(async (req, res) => {
+    const { username, description, duration } = req.body;
+    const date = Date.parse(req.body.date);
+
+    if (!username || !description || !date)
+        return res.status(400).json({
+            success: false,
+            message: 'Title is required',
+        });
+
+    const newExercise = new Exercise({
+        username,
+        description,
+        duration,
+        date,
+    });
+
+    try {
+        await newExercise.save();
+        return res
+            .status(200)
+            .json({ success: true, message: 'Create success' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 });
 
 router.route('/edit/:id').put(async (req, res) => {
-    const { username, desciption, duration } = req.body;
+    const { username, description, duration } = req.body;
     const date = Date.parse(req.body.date);
-    if (!username || !desciption || !duration || !date)
-        res.status(400).json({
+    if (!username || !description || !date)
+        return res.status(400).json({
             success: false,
             message: 'Title is required',
         });
 
     try {
-        let updateExercise = { username, desciption, duration, date };
+        let updateExercise = { username, description, duration, date };
         updateExercise = await Exercise.findByIdAndUpdate(
             req.params.id,
             updateExercise,
             { new: true }
         );
-        res.status(200).json({ success: true, message: 'Update success' });
+        return res
+            .status(200)
+            .json({ success: true, message: 'Update success' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        return res.status(500).json({ message: error.message });
     }
 });
 
 router.route('/delete/:id').delete(async (req, res) => {
     try {
         await Exercise.findByIdAndDelete(req.params.id);
-        res.status(200).json({ success: true, message: 'Delete success' });
+        return res
+            .status(200)
+            .json({ success: true, message: 'Delete success' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({ message: error.message });
     }
 });
 

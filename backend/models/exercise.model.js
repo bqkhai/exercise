@@ -6,17 +6,17 @@ const exerciseSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        desciption: {
+        description: {
             type: String,
             required: true,
         },
         duration: {
             type: Number,
-            required: true,
+            //required: true,
         },
         date: {
             type: Date,
-            //required: true,
+            required: true,
         },
     },
     { timestamps: true }
